@@ -159,20 +159,3 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-The file includes these three changes:
-
-The dotnetSdkVersion variable is moved to the top of the file so that multiple stages can access it. Here the Build stage and Test stage require this version of .NET Core.
-
-The Build stage publishes only the Space Game website package as the build artifact. Previously, you published the artifacts like this:
-
-yml
-
-Copy
-- task: DotNetCoreCLI@2
-  displayName: 'Publish the project - $(buildConfiguration)'
-  inputs:
-    command: 'publish'
-    projects: '**/*.csproj'
-    publishWebProjects: false
-    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-    zipAfterPublish: true
